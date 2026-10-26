@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#273d3b">
+  <meta name="description" content="栖页，一个让日常慢下来的个人网址导航。搜索、收藏，把喜欢的世界放在眼前。">
+  <title>栖页 · 让日常慢下来</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect rx='18' width='64' height='64' fill='%23294036'/%3E%3Cpath d='M16 39l16-22 16 22M23 31v18h18V31' stroke='%23edf2df' stroke-width='3' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="landscape" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="栖页首页"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 20 16 5l11 15M10 14v13h12V14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span>栖页<small>A PLACE TO LAND</small></span></a>
+    <div class="top-actions"><span class="local-note"><span class="status-dot"></span>你的日常，自在一点</span><button class="icon-button" id="focus-toggle" title="专注模式" aria-label="进入专注模式" aria-pressed="false" data-icon="focus"></button><button class="icon-button" id="settings-open" title="个性化设置" aria-label="打开个性化设置" data-icon="settings"></button></div>
+  </header>
+  <main>
+    <section class="moment" aria-label="此刻">
+      <div class="date-line" id="date-line"></div>
+      <h1 class="clock" aria-label="当前时间"><span id="clock-hour">--</span><span class="colon">:</span><span id="clock-minute">--</span></h1>
+      <h2 id="greeting">你好，旅行者。</h2>
+      <p class="greeting-note" id="greeting-note">世界很大，先从你喜欢的地方出发。</p>
+      <form class="search" id="search-form" role="search">
+        <div class="engine-wrap"><button type="button" id="engine-button" class="engine-button" aria-label="选择搜索引擎" aria-expanded="false"><span id="engine-mark">必应</span><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke="currentColor" fill="none" stroke-width="1.5"/></svg></button><div class="engine-menu" id="engine-menu" hidden><button type="button" data-engine="bing">必应 Bing</button><button type="button" data-engine="baidu">百度 Baidu</button><button type="button" data-engine="google">Google</button></div></div>
+        <label class="sr-only" for="search-input">搜索你想去的世界</label><input id="search-input" type="search" autocomplete="off" placeholder="搜索你想去的世界" required><kbd class="search-key">/</kbd><button class="search-submit" type="submit" aria-label="搜索" data-icon="arrow"></button>
+      </form>
+    </section>
+    <section class="bookmarks" aria-label="我的网址">
+      <div class="bookmark-toolbar"><div class="categories" role="tablist" aria-label="网址分类"><button role="tab" aria-selected="true" class="active" data-category="常用">常用</button><button role="tab" aria-selected="false" data-category="工作">工作</button><button role="tab" aria-selected="false" data-category="灵感">灵感</button><button role="tab" aria-selected="false" data-category="生活">生活</button></div><button id="edit-toggle" class="edit-button" aria-pressed="false"><span data-icon="edit"></span><span id="edit-label">整理</span></button></div>
+      <div class="link-grid" id="link-grid"></div>
+      <p class="bookmark-hint" id="bookmark-hint">把常去的地方，放在触手可及的位置。</p>
+    </section>
+  </main>
+  <footer class="footer"><span class="photo-credit"><span data-icon="image"></span><span id="scene-label">山湖之间</span><span class="credit-divider">/</span><a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></span><p class="quote">「 把日子过成自己喜欢的样子。 」</p><span class="footer-note">此刻，刚刚好<span class="tiny-line"></span></span></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title"><div class="drawer-head"><div><span class="eyebrow">MAKE IT YOURS</span><h2 id="settings-title">你的栖页</h2></div><button class="icon-button" data-close="settings-dialog" aria-label="关闭设置" data-icon="close"></button></div><p class="drawer-intro">一点小改变，让每次打开都合你心意。</p>
+    <section class="setting-section"><h3>怎么称呼你</h3><label class="sr-only" for="name-input">你的名字</label><input class="field" id="name-input" maxlength="16" placeholder="旅行者"><p class="field-help">下一句问候，留给你。</p></section>
+    <section class="setting-section"><h3>窗外的风景</h3><div class="scene-options" id="scene-options"><button class="scene-card" data-scene="lake"><span class="scene-thumb lake"></span><span>山湖之间</span></button><button class="scene-card" data-scene="forest"><span class="scene-thumb forest"></span><span>森林来信</span></button><button class="scene-card" data-scene="dusk"><span class="scene-thumb dusk"></span><span>日落时分</span></button></div><label class="upload-button" for="background-upload"><span data-icon="upload"></span>换上自己的照片<input type="file" id="background-upload" accept="image/jpeg,image/png,image/webp" hidden></label><p class="field-help">JPG、PNG 或 WebP，最大 4 MB。</p></section>
+    <section class="setting-section"><h3>面板外观</h3><div class="segmented" aria-label="面板外观"><button data-theme="light">浅色</button><button data-theme="dark">深色</button></div><label class="range-label" for="dim-range"><span>背景遮罩</span><span id="dim-value">30%</span></label><input type="range" id="dim-range" min="10" max="65" step="1"></section>
+    <div class="privacy-note"><span data-icon="lock"></span><p>名字、网址和偏好保存在当前浏览器。<br>换台设备时，需要重新设置。</p></div><button class="drawer-done" data-close="settings-dialog">好了，回到此刻 <span data-icon="arrow"></span></button>
+  </dialog>
+  <dialog class="link-dialog" id="link-dialog" aria-labelledby="link-dialog-title"><div class="link-dialog-head"><h2 id="link-dialog-title">添加一个常去的地方</h2><button class="icon-button" data-close="link-dialog" aria-label="关闭" data-icon="close"></button></div><form id="link-form"><label for="link-name">网站名称</label><input class="field" id="link-name" maxlength="24" placeholder="例如：我的博客" required><label for="link-url">网址</label><input class="field" id="link-url" placeholder="https://example.com" required inputmode="url"><label for="link-category">放在哪一组</label><select class="field" id="link-category"><option>常用</option><option>工作</option><option>灵感</option><option>生活</option></select><p class="form-error" id="link-error" role="alert"></p><div class="form-actions"><button type="button" class="delete-button" id="delete-link" hidden>删除网址</button><button type="submit" class="save-button">保存网址 <span data-icon="arrow"></span></button></div></form></dialog>
+</body></html>

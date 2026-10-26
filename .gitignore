@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+.openai/
+.sites-runtime/
+.sites-checkout*/
+node.path.txt

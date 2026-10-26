@@ -1,0 +1,13 @@
+{
+  "name": "qipage",
+  "version": "0.1.0",
+  "private": true,
+  "description": "栖页：支持背景自动配色的个人网址导航",
+  "scripts": {
+    "start": "node server.cjs",
+    "open": "node launch.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
