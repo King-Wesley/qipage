@@ -35,7 +35,7 @@ applySettings();renderLinks();updateTime();setInterval(updateTime,1000);
   const targets='.brand,.local-note,.top-actions>.icon-button,.date-line,.clock>span,#greeting,.greeting-note,.categories button,.edit-button,.tile-name,.add-tile .tile-square,.bookmark-hint,.photo-credit,.quote,.footer-note';
   const canvas=document.createElement('canvas');
   const context=canvas.getContext('2d',{willReadFrequently:true});
-  let pixels=null,source='',imageWidth=0,imageHeight=0,generation=0,frame=0,settleTimer=0;
+  let pixels=null,source='',imageWidth=0,imageHeight=0,generation=0,frame=0,settleTimer=0,lastPalette='',lastPanelDark=null;
   const linear=value=>{value/=255;return value<=.04045?value/12.92:Math.pow((value+.055)/1.055,2.4);};
   const luminance=rgb=>.2126*linear(rgb[0])+.7152*linear(rgb[1])+.0722*linear(rgb[2]);
   const blend=(base,over,alpha)=>base.map((value,i)=>value*(1-alpha)+over[i]*alpha);
@@ -65,6 +65,14 @@ applySettings();renderLinks();updateTime();setInterval(updateTime,1000);
   function refresh(){
     frame=0;
     const white=luminance([255,255,255]),black=luminance([20,30,25]);
+    const colors=[];
+    for(let row=0;row<5;row++)for(let col=0;col<7;col++)colors.push(backgroundAt(window.innerWidth*(col+.5)/7,window.innerHeight*(.12+.76*(row+.5)/5)));
+    const average=[0,1,2].map(channel=>Math.round(colors.reduce((sum,color)=>sum+color[channel],0)/colors.length));
+    const shade=luminance(average),lightScore=(white+.05)/(shade+.05),darkScore=(Math.max(shade,black)+.05)/(Math.min(shade,black)+.05);
+    const dark=lastPanelDark!==null&&Math.abs(lightScore-darkScore)<.3?lastPanelDark:lightScore>=darkScore;
+    lastPanelDark=dark;
+    const palette=average.join(',')+'|'+dark;
+    if(palette!==lastPalette){lastPalette=palette;const detail={rgb:average,dark};document.documentElement.dataset.wallpaperPalette=JSON.stringify(detail);document.dispatchEvent(new CustomEvent('qipage:wallpaper-tone',{detail}));}
     document.querySelectorAll(targets).forEach(element=>{
       const rect=element.getBoundingClientRect();
       if(!rect.width||!rect.height)return;

@@ -2,6 +2,21 @@
   const get=id=>document.getElementById(id);
   const dialog=get('daily-settings-dialog');
   let config=null,state=null,pollTimer=null,loadingConfig=false,newsSignature='';
+  function matchWallpaper(event){
+    const {rgb,dark}=event.detail||{};
+    if(!Array.isArray(rgb)||rgb.length!==3||rgb.some(value=>!Number.isFinite(value)))return;
+    const panel=get('daily-panel'),mix=(weight,base)=>rgb.map(value=>Math.round(Math.max(0,Math.min(255,value))*weight+base*(1-weight)));
+    const surface=dark?mix(.48,12):mix(.24,250);
+    const accent=dark?mix(.38,218):mix(.25,48);
+    panel.dataset.surfaceTheme=dark?'dark':'light';
+    panel.style.setProperty('--daily-surface',`rgba(${surface.join(',')},${dark?.79:.84})`);
+    panel.style.setProperty('--daily-accent-rgb',accent.join(','));
+    panel.style.setProperty('--daily-border',dark?'rgba(224,240,224,.22)':'rgba(255,255,255,.68)');
+    panel.style.setProperty('--daily-ink',dark?'#f0f5ef':'#20382c');
+    panel.style.setProperty('--daily-muted',dark?'#c2d1c6':'#52675a');
+  }
+  document.addEventListener('qipage:wallpaper-tone',matchWallpaper);
+  try{const saved=document.documentElement.dataset.wallpaperPalette;if(saved)matchWallpaper({detail:JSON.parse(saved)});}catch{}
   const dateNow=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   function plainDate(value){return value?value.replaceAll('-',' / '):'';}
   function formatTime(value){if(!value)return '';const d=new Date(value);if(Number.isNaN(d.getTime()))return '';return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);}
