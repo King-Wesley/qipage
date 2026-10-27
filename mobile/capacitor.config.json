@@ -1,0 +1,14 @@
+{
+  "appId": "com.kingwesley.qipage",
+  "appName": "栖页",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "localhost"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "webContentsDebuggingEnabled": false,
+    "adjustMarginsForEdgeToEdge": "auto"
+  }
+}

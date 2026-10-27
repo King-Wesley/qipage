@@ -1,0 +1,13 @@
+html {overscroll-behavior:none}
+body {padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+@media (max-width:600px) {
+  input,select,textarea {font-size:16px!important}
+  .search-key {display:none}
+  dialog {max-height:calc(100dvh - 32px);overflow-y:auto}
+  .daily-settings-dialog {padding-bottom:24px}
+}
+.android-welcome {border:0;border-radius:24px;background:#1c3027;color:#fff;padding:28px;max-width:420px;width:calc(100% - 40px);box-sizing:border-box}
+.android-welcome::backdrop {background:rgba(12,28,23,.65);backdrop-filter:blur(8px)}
+.android-welcome h2 {font-size:25px;line-height:1.45;margin:16px 0}
+.android-welcome p {line-height:1.8;font-size:14px;color:#fff;margin:12px 0}
+.android-welcome button {margin-top:24px}

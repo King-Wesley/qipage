@@ -85,3 +85,8 @@ npm test
 此分支已合入 main 中确认的风格功能，保留完整 DeepSeek 每日精选。右上角设置内可选择极简数字、卡片数字、上下排版、指针表盘，调整字体、大小、秒数、12/24 小时制、时钟颜色、点缀色和玻璃/纯色面板。普通文字固定白色，只有时钟颜色由你手动选择。已有收藏、背景与 API 配置继续保留。
 
 运行前端开发检查：先 npm ci，再 npm test。修改 ui.js 或 style-config.js 后运行 npm run build，生成并一并提交 app.js。
+
+
+## Android 安装包
+
+此分支包含手机独立运行的安卓应用和最新的时钟风格，不需要电脑服务或 Termux。安装、构建、签名与验证范围见 [mobile/README.md](mobile/README.md)。

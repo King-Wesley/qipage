@@ -14,3 +14,18 @@ node.path.txt
 coverage/
 
 .runtime/
+# Android build outputs and local signing material
+mobile/dist/
+mobile/.test-build/
+mobile/node_modules/
+mobile/android/.gradle/
+mobile/android/build/
+mobile/android/app/build/
+mobile/android/capacitor-cordova-android-plugins/
+mobile/android/app/src/main/assets/
+mobile/android/local.properties
+mobile/android/capacitor.settings.gradle
+mobile/android/app/capacitor.build.gradle
+*.keystore
+*.jks
+*.p12

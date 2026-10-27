@@ -1,0 +1,20 @@
+{
+  "name": "qipage-android",
+  "version": "0.3.1",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "sync": "npm run build && cap sync android",
+    "test": "node --test tests/*.test.cjs"
+  },
+  "dependencies": {
+    "@capacitor/core": "7.6.9",
+    "@capacitor/android": "7.6.9",
+    "@noble/hashes": "1.8.0",
+    "buffer": "6.0.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.9",
+    "esbuild": "0.25.12"
+  }
+}

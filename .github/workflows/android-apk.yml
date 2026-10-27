@@ -1,0 +1,39 @@
+name: Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [feature/android-apk]
+    paths: ['mobile/**', 'daily-service.cjs', 'daily.js', 'app.js', 'index.html', '*.css', 'assets/**', '.github/workflows/android-apk.yml']
+  pull_request:
+    paths: ['mobile/**', 'daily-service.cjs', 'daily.js', 'app.js', 'index.html', '*.css', 'assets/**', '.github/workflows/android-apk.yml']
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: npm test
+      - run: npm ci
+        working-directory: mobile
+      - run: npm run sync && npm test
+        working-directory: mobile
+      - run: bash gradlew --no-daemon assembleDebug lintDebug
+        working-directory: mobile/android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qipage-android-preview
+          path: mobile/android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
