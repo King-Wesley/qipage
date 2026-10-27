@@ -107,3 +107,18 @@ body[data-clock-style="analog"] .clock-face {display:block}
   .custom-color-label {margin-left:0}
   .style-two-columns {grid-template-columns:1.5fr 1fr}
 }
+
+/* Explicit reading size applies across news editions. */
+:root {--news-font-size:16px}
+.reading-settings .segmented {margin-top:15px}
+.reading-font-preview {font-size:var(--news-font-size);line-height:1.85;padding:14px;border-radius:12px;background:#ffffff0a;border:1px solid #ffffff20}
+.daily-panel .daily-news-title {font-size:calc(var(--news-font-size) + 4px);line-height:1.65}
+.daily-panel .daily-news-summary,.daily-panel .daily-empty p {font-size:var(--news-font-size);line-height:1.9}
+.daily-panel .daily-news-source,.daily-panel .daily-meta,.daily-panel .daily-bottom {font-size:max(12px,calc(var(--news-font-size) - 3px));line-height:1.8}
+.daily-panel .daily-news-why {font-size:calc(var(--news-font-size) - 1px);line-height:1.85}
+.news-reading-tools {display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:14px;color:#fff;font-size:12px}
+.news-reading-tools button {background:rgba(var(--accent-rgb),.16);border:1px solid #ffffff30;border-radius:8px;min-width:35px;min-height:44px;color:#fff}
+.news-reading-tools button:disabled {opacity:.4}
+.news-font-value {min-width:36px;text-align:center;font-variant-numeric:tabular-nums}
+
+.copy-status {display:inline-block;color:#fff;font-size:10px;line-height:1.6;margin-top:10px;opacity:.8;text-shadow:0 1px 8px #0008}

@@ -4,7 +4,7 @@
   else root.QipageStyle=api;
 })(typeof globalThis!=='undefined'?globalThis:this,()=>{
   const CLOCK_STYLES=['minimal','cards','stacked','analog'];
-  const DEFAULTS=Object.freeze({clockStyle:'minimal',clockColor:'#ffffff',accentColor:'#98cbb4',clockSize:100,clockFont:'sans',showSeconds:false,hour12:false,panelStyle:'glass'});
+  const DEFAULTS=Object.freeze({clockStyle:'minimal',clockColor:'#ffffff',accentColor:'#98cbb4',clockSize:100,clockFont:'sans',showSeconds:false,hour12:false,panelStyle:'glass',newsFontSize:16});
   const color=(value,fallback)=>typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value)?value.toLowerCase():fallback;
   function normalizeStyle(input={}){
     const size=Number(input.clockSize??DEFAULTS.clockSize);
@@ -14,7 +14,8 @@
       clockSize:Number.isFinite(size)?Math.min(125,Math.max(75,Math.round(size))):DEFAULTS.clockSize,
       clockFont:['sans','serif','mono'].includes(input.clockFont)?input.clockFont:DEFAULTS.clockFont,
       showSeconds:input.showSeconds===true,hour12:input.hour12===true,
-      panelStyle:['glass','solid'].includes(input.panelStyle)?input.panelStyle:DEFAULTS.panelStyle
+      panelStyle:['glass','solid'].includes(input.panelStyle)?input.panelStyle:DEFAULTS.panelStyle,
+      newsFontSize:input.newsFontSize!=null&&Number.isFinite(Number(input.newsFontSize))?Math.min(24,Math.max(14,Math.round(Number(input.newsFontSize)))):DEFAULTS.newsFontSize
     };
   }
   function timeParts(date,input={}){

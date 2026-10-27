@@ -4,7 +4,11 @@
 
 “今日，值得一看”使用统一白色文字，面板材质与点缀色跟随风格设置。
 
-此功能开发在 `feature/daily-deepseek` 分支，尚未合并到 `main`。
+main、feature/daily-deepseek 和 feature/android-apk 同步提供每日内容与外观设置。
+
+[查看更新日志](CHANGELOG.md)
+
+每日配文包括页顶短句、时钟下方文字和页脚句子，由 DeepSeek 按北京时间每天生成并缓存。失败时保留上次配文及真实日期；没有配置密钥时使用默认文字。新闻支持 14–24 px 字号，在外观设置或新闻区 A− / A＋ 调整并自动保存。
 
 ## Windows：下载、解压、双击即用
 
@@ -86,7 +90,6 @@ npm test
 
 运行前端开发检查：先 npm ci，再 npm test。修改 ui.js 或 style-config.js 后运行 npm run build，生成并一并提交 app.js。
 
+## Android 安装版
 
-## Android 安装包
-
-此分支包含手机独立运行的安卓应用和最新的时钟风格，不需要电脑服务或 Termux。安装、构建、签名与验证范围见 [mobile/README.md](mobile/README.md)。
+[手机安装与构建说明](mobile/README.md)。Android 版本与桌面端同步每日 AI 配文、阅读字号和时钟风格。

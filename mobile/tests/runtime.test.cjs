@@ -17,6 +17,7 @@ function mockNetwork(url,options={}){
   const body=JSON.parse(options.body);assert.equal(options.headers.Authorization,'Bearer '+key);
   if(url.endsWith('/v1/tools/search'))return Promise.resolve(response({results:[{title:'今日科技进展',url:'https://example.org/news',date:'2026-10-27T01:00:00Z',summary:'可验证资料'}]}));
   let content={ok:true};
+  if(body.messages[0].content.includes('每日配文编辑'))content={tagline:'发现今天的小美好',note:'世界很大，今天从喜欢的地方出发。',quote:'沿途的小小风景，也值得慢慢收藏。'};
   if(body.messages[0].content.includes('新闻编辑'))content={news:[{id:'n0',summary:'只使用候选事实的摘要',why:'与关注领域相关'}]};
   if(body.messages[0].content.includes('桌面壁纸'))content={id:JSON.parse(body.messages[1].content).candidates[0].id,reason:'干净的山湖风景'};
   return Promise.resolve(response({choices:[{finish_reason:'stop',message:{content:JSON.stringify(content)}}]}));
@@ -29,12 +30,12 @@ test('phone refresh persists key, news and binary wallpaper across cold starts',
   daily.updateConfig({apiKey:key,topics:'人工智能'});await first.flush();
   assert.equal(daily.getConfig().configured,true);assert.equal(JSON.stringify(daily.getConfig()).includes(key),false);
   await daily.test();await daily.refresh();await first.flush();
-  assert.equal(daily.getState().news.length,1);assert.equal(daily.getState().newsDate,'2026-10-27');
+  assert.equal(daily.getState().copyDate,'2026-10-27');assert.equal(daily.getState().copy.tagline,'发现今天的小美好');assert.equal(daily.getState().news.length,1);assert.equal(daily.getState().newsDate,'2026-10-27');
   assert.deepEqual([...first.readFileSync(daily.wallpaperPath)],[255,216,255,217]);assert.ok(writes>=3);
   daily.close();
   const second=runtime();await second.initializeStorage(store);
   const restored=second.createDailyService({root:'/phone',schedule:false,now:()=>new Date(instant),fetchImpl:mockNetwork});
-  assert.equal(restored.getConfig().configured,true);assert.equal(restored.getState().news.length,1);
+  assert.equal(restored.getState().copy.note,'世界很大，今天从喜欢的地方出发。');assert.equal(restored.getConfig().configured,true);assert.equal(restored.getState().news.length,1);
   assert.deepEqual([...second.readFileSync(restored.wallpaperPath)],[255,216,255,217]);
   restored.updateConfig({clearApiKey:true});await second.flush();assert.equal(restored.getConfig().configured,false);restored.close();
   const third=runtime();await third.initializeStorage(store);
