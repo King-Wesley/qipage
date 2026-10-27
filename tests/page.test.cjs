@@ -11,7 +11,6 @@ function page(saved,failSave=false){
   win.HTMLDialogElement.prototype.close=function(){this.removeAttribute('open');};
   if(saved)win.localStorage.setItem('qipage-v1',JSON.stringify(saved));
   if(failSave)Object.defineProperty(win.Storage.prototype,'setItem',{value(){throw new Error('QuotaExceeded');}});
-  win.eval(fs.readFileSync(path.join(root,'style-config.js'),'utf8'));
   win.eval(fs.readFileSync(path.join(root,'app.js'),'utf8'));
   return{win,dom,errors,doc:win.document,stored:()=>JSON.parse(win.localStorage.getItem('qipage-v1'))};
 }
