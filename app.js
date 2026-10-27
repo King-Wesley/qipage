@@ -5,7 +5,7 @@
   else root.QipageStyle=api;
 })(typeof globalThis!=='undefined'?globalThis:this,()=>{
   const CLOCK_STYLES=['minimal','cards','stacked','analog'];
-  const DEFAULTS=Object.freeze({clockStyle:'minimal',clockColor:'#ffffff',accentColor:'#98cbb4',clockSize:100,clockFont:'sans',showSeconds:false,hour12:false,panelStyle:'glass'});
+  const DEFAULTS=Object.freeze({clockStyle:'minimal',clockColor:'#ffffff',accentColor:'#98cbb4',clockSize:100,clockFont:'sans',showSeconds:false,hour12:false,panelStyle:'glass',newsFontSize:16});
   const color=(value,fallback)=>typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value)?value.toLowerCase():fallback;
   function normalizeStyle(input={}){
     const size=Number(input.clockSize??DEFAULTS.clockSize);
@@ -15,7 +15,8 @@
       clockSize:Number.isFinite(size)?Math.min(125,Math.max(75,Math.round(size))):DEFAULTS.clockSize,
       clockFont:['sans','serif','mono'].includes(input.clockFont)?input.clockFont:DEFAULTS.clockFont,
       showSeconds:input.showSeconds===true,hour12:input.hour12===true,
-      panelStyle:['glass','solid'].includes(input.panelStyle)?input.panelStyle:DEFAULTS.panelStyle
+      panelStyle:['glass','solid'].includes(input.panelStyle)?input.panelStyle:DEFAULTS.panelStyle,
+      newsFontSize:input.newsFontSize!=null&&Number.isFinite(Number(input.newsFontSize))?Math.min(24,Math.max(14,Math.round(Number(input.newsFontSize)))):DEFAULTS.newsFontSize
     };
   }
   function timeParts(date,input={}){
@@ -81,11 +82,15 @@ function applyClockStyle(){
   body.dataset.seconds=String(style.showSeconds);
   root.style.setProperty('--clock-color',style.clockColor);root.style.setProperty('--accent-rgb',QipageStyle.rgb(style.accentColor));
   root.style.setProperty('--clock-scale',style.clockSize/100);
+  root.style.setProperty('--news-font-size',style.newsFontSize+'px');
+  $('#news-font-size').value=style.newsFontSize;$('#news-font-size-value').textContent=style.newsFontSize+'px';
+  document.querySelectorAll('.news-font-value').forEach(node=>node.textContent=style.newsFontSize+'px');
+  document.querySelectorAll('button[data-news-step]').forEach(button=>button.disabled=Number(button.dataset.newsStep)<0?style.newsFontSize<=14:style.newsFontSize>=24);
   $('#clock-color-input').value=style.clockColor;$('#accent-color-input').value=style.accentColor;
   $('#clock-font').value=style.clockFont;$('#clock-size').value=style.clockSize;$('#clock-size-value').textContent=style.clockSize+'%';
   $('#clock-show-seconds').checked=style.showSeconds;
-  for(const [selector,key] of [['button[data-clock-style]','clockStyle'],['button[data-clock-color]','clockColor'],['button[data-panel-style]','panelStyle']]){
-    document.querySelectorAll(selector).forEach(button=>{const selected=button.dataset[key]===style[key];button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
+  for(const [selector,key] of [['button[data-clock-style]','clockStyle'],['button[data-clock-color]','clockColor'],['button[data-panel-style]','panelStyle'],['button[data-news-font-size]','newsFontSize']]){
+    document.querySelectorAll(selector).forEach(button=>{const selected=button.dataset[key]===String(style[key]);button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
   }
   document.querySelectorAll('[data-hour-format]').forEach(button=>{const selected=(button.dataset.hourFormat==='12')===style.hour12;button.classList.toggle('active',selected);button.setAttribute('aria-pressed',String(selected));});
 }
@@ -105,3 +110,7 @@ $('#clock-font').addEventListener('change',event=>changeStyle({clockFont:event.t
 $('#clock-size').addEventListener('input',event=>changeStyle({clockSize:Number(event.target.value)}));
 $('#clock-show-seconds').addEventListener('change',event=>changeStyle({showSeconds:event.target.checked}));
 $('#reset-style').addEventListener('click',()=>{changeStyle(QipageStyle.DEFAULTS);toast('已还原时钟与配色。');});
+
+document.querySelectorAll('button[data-news-font-size]').forEach(button=>button.addEventListener('click',()=>changeStyle({newsFontSize:Number(button.dataset.newsFontSize)})));
+document.querySelectorAll('button[data-news-step]').forEach(button=>button.addEventListener('click',()=>changeStyle({newsFontSize:settings.newsFontSize+Number(button.dataset.newsStep)})));
+$('#news-font-size').addEventListener('input',event=>changeStyle({newsFontSize:Number(event.target.value)}));

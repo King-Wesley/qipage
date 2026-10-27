@@ -58,3 +58,5 @@ test('automatic wallpaper contrast observers and black/white theme controls are 
   assert.equal(script.includes('adaptiveContrast'),false);assert.equal(script.includes('MutationObserver'),false);
   assert.equal(html.includes('data-theme='),false);assert.equal(css.includes('[data-adaptive-text'),false);
 });
+
+test('news reading size updates, clamps and survives reload',()=>{const {win,dom,doc,stored}=page();doc.querySelector('button[data-news-font-size="24"]').click();assert.equal(doc.documentElement.style.getPropertyValue('--news-font-size'),'24px');assert.equal(stored().settings.newsFontSize,24);const restored=page(stored());assert.equal(restored.doc.getElementById('news-font-size').value,'24');const slider=doc.getElementById('news-font-size');slider.value='14';slider.dispatchEvent(new win.Event('input'));assert.equal(stored().settings.newsFontSize,14);dom.window.close();restored.dom.window.close();});

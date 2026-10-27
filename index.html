@@ -77,7 +77,8 @@
       <label class="style-checkbox"><input id="clock-show-seconds" type="checkbox"><span>显示秒数 / 秒针</span></label>
     </section>
     <section class="setting-section"><h3>面板外观</h3><div class="segmented" role="group" aria-label="面板材质"><button type="button" data-panel-style="glass" aria-pressed="false">通透玻璃</button><button type="button" data-panel-style="solid" aria-pressed="false">柔和纯色</button></div><label class="range-label" for="dim-range"><span>背景遮罩</span><span id="dim-value">30%</span></label><input type="range" id="dim-range" min="10" max="65" step="1"></section>
-    <button type="button" class="reset-style" id="reset-style">还原时钟与配色</button>
+    <section class="setting-section reading-settings"><h3>新闻阅读</h3><label class="range-label" for="news-font-size"><span>正文字号</span><output id="news-font-size-value">16px</output></label><input id="news-font-size" type="range" min="14" max="24" step="1" value="16"><div class="segmented" role="group" aria-label="新闻字号预设"><button type="button" data-news-font-size="16" aria-pressed="false">标准</button><button type="button" data-news-font-size="20" aria-pressed="false">舒适</button><button type="button" data-news-font-size="24" aria-pressed="false">大字</button></div><p class="reading-font-preview">新闻正文预览：让每一段阅读，都清晰舒适。</p><p class="field-help">14–24px，标题、正文、来源和入选理由会一起调整，并自动保存。</p></section>
+    <button type="button" class="reset-style" id="reset-style">还原外观设置</button>
 
     <div class="privacy-note"><span data-icon="lock"></span><p>名字、网址和偏好保存在当前浏览器。<br>换台设备时，需要重新设置。</p></div><button class="drawer-done" data-close="settings-dialog">好了，回到此刻 <span data-icon="arrow"></span></button>
   </dialog>
