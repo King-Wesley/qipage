@@ -13,9 +13,10 @@ async function ready(){const health=await inspect();return health?.app==='qipage
     for(let i=0;i<40&&!await ready();i++)await new Promise(resolve=>setTimeout(resolve,100));
     if(!await ready())throw new Error('Could not start Qipage at port 4173. The port may be in use.');
   }
+  if(process.argv.includes('--background')){console.log('Qipage is ready: '+url);return;}
   const locations=[process.env.PROGRAMFILES,process.env['PROGRAMFILES(X86)'],process.env.LOCALAPPDATA].filter(Boolean).map(folder=>path.join(folder,'Google/Chrome/Application/chrome.exe'));
   const chrome=locations.find(file=>fs.existsSync(file));
-  if(!chrome)throw new Error('Google Chrome was not found. Please open '+url+' in Chrome.');
-  const browser=spawn(chrome,[url],{detached:true,stdio:'ignore',windowsHide:false});browser.on('error',error=>console.error(error.message));browser.unref();
+  if(!chrome&&process.platform!=='win32')throw new Error('Please open '+url+' in your browser.');
+  const browser=spawn(chrome||'explorer.exe',[url],{detached:true,stdio:'ignore',windowsHide:false});browser.on('error',error=>console.error(error.message));browser.unref();
   console.log('Qipage is ready: '+url);
 })().catch(error=>{console.error(error.message);process.exitCode=1;});

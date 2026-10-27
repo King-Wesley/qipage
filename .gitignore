@@ -12,3 +12,5 @@ Thumbs.db
 node.path.txt
 .private/
 coverage/
+
+.runtime/
