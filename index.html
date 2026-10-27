@@ -19,7 +19,20 @@
   <main>
     <section class="moment" aria-label="此刻">
       <div class="date-line" id="date-line"></div>
-      <h1 class="clock" aria-label="当前时间"><span id="clock-hour">--</span><span class="colon">:</span><span id="clock-minute">--</span></h1>
+            <h1 class="clock" id="clock" aria-label="当前时间">
+        <span class="clock-digits" aria-hidden="true"><span id="clock-hour">--</span><span class="colon">:</span><span id="clock-minute">--</span><span id="clock-seconds" class="clock-seconds" hidden><span class="seconds-colon">:</span><span id="clock-second">--</span></span></span>
+        <svg class="clock-face" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="dial-surface" cx="100" cy="100" r="96"/>
+          <g class="dial-markers"><path d="M100 14v7M100 179v7M14 100h7M179 100h7"/><path d="M143 25l-3 5M175 57l-5 3M175 143l-5-3M143 175l-3-5M57 175l3-5M25 143l5-3M25 57l5 3M57 25l3 5"/></g>
+          <text class="dial-number" x="100" y="39">12</text><text class="dial-number" x="167" y="104">3</text><text class="dial-number" x="100" y="173">6</text><text class="dial-number" x="33" y="104">9</text>
+          <line id="hour-hand" class="hour-hand" x1="100" y1="107" x2="100" y2="56"/>
+          <line id="minute-hand" class="minute-hand" x1="100" y1="112" x2="100" y2="34"/>
+          <line id="second-hand" class="second-hand" x1="100" y1="119" x2="100" y2="25" hidden/>
+          <circle class="dial-center" cx="100" cy="100" r="4"/>
+        </svg>
+        <span id="clock-period" class="clock-period" hidden></span>
+      </h1>
+
       <h2 id="greeting">你好，旅行者。</h2>
       <p class="greeting-note" id="greeting-note">世界很大，先从你喜欢的地方出发。</p>
       <form class="search" id="search-form" role="search">
@@ -35,10 +48,37 @@
   </main>
   <footer class="footer"><span class="photo-credit"><span data-icon="image"></span><span id="scene-label">山湖之间</span><span class="credit-divider">/</span><a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a></span><p class="quote">「 把日子过成自己喜欢的样子。 」</p><span class="footer-note">此刻，刚刚好<span class="tiny-line"></span></span></footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title"><div class="drawer-head"><div><span class="eyebrow">MAKE IT YOURS</span><h2 id="settings-title">你的栖页</h2></div><button class="icon-button" data-close="settings-dialog" aria-label="关闭设置" data-icon="close"></button></div><p class="drawer-intro">一点小改变，让每次打开都合你心意。</p>
+  <dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title"><div class="drawer-head"><div><span class="eyebrow">MAKE IT YOURS</span><h2 id="settings-title">风格与偏好</h2></div><button class="icon-button" data-close="settings-dialog" aria-label="关闭设置" data-icon="close"></button></div><p class="drawer-intro">让时间，有你的样子。</p>
     <section class="setting-section"><h3>怎么称呼你</h3><label class="sr-only" for="name-input">你的名字</label><input class="field" id="name-input" maxlength="16" placeholder="旅行者"><p class="field-help">下一句问候，留给你。</p></section>
     <section class="setting-section"><h3>窗外的风景</h3><div class="scene-options" id="scene-options"><button class="scene-card" data-scene="lake"><span class="scene-thumb lake"></span><span>山湖之间</span></button><button class="scene-card" data-scene="forest"><span class="scene-thumb forest"></span><span>森林来信</span></button><button class="scene-card" data-scene="dusk"><span class="scene-thumb dusk"></span><span>日落时分</span></button></div><label class="upload-button" for="background-upload"><span data-icon="upload"></span>换上自己的照片<input type="file" id="background-upload" accept="image/jpeg,image/png,image/webp" hidden></label><p class="field-help">JPG、PNG 或 WebP，最大 4 MB。</p></section>
-    <section class="setting-section"><h3>面板外观</h3><div class="segmented" aria-label="面板外观"><button data-theme="light">浅色</button><button data-theme="dark">深色</button></div><label class="range-label" for="dim-range"><span>背景遮罩</span><span id="dim-value">30%</span></label><input type="range" id="dim-range" min="10" max="65" step="1"></section>
+    <section class="setting-section style-section"><h3>时钟风格</h3>
+      <div class="clock-style-options" role="group" aria-label="选择时钟组件">
+        <button type="button" class="clock-style-card" data-clock-style="minimal" aria-pressed="false"><span class="clock-card-demo demo-minimal" aria-hidden="true">10:09</span><span>极简数字</span></button>
+        <button type="button" class="clock-style-card" data-clock-style="cards" aria-pressed="false"><span class="clock-card-demo demo-cards" aria-hidden="true"><i>10</i><i>09</i></span><span>卡片数字</span></button>
+        <button type="button" class="clock-style-card" data-clock-style="stacked" aria-pressed="false"><span class="clock-card-demo demo-stacked" aria-hidden="true"><i>10</i><i>09</i></span><span>上下排版</span></button>
+        <button type="button" class="clock-style-card" data-clock-style="analog" aria-pressed="false"><span class="clock-card-demo demo-analog" aria-hidden="true"><i></i></span><span>指针表盘</span></button>
+      </div>
+      <div class="style-preview"><span>实时预览</span><strong id="style-preview-time">10:09</strong></div>
+    </section>
+    <section class="setting-section style-section"><h3>颜色与细节</h3>
+      <label class="style-label" for="clock-color-input">时钟颜色</label>
+      <div class="style-color-row" role="group" aria-label="时钟颜色">
+        <button type="button" class="color-swatch" data-clock-color="#ffffff" style="--swatch:#ffffff" aria-label="白色" aria-pressed="false"></button>
+        <button type="button" class="color-swatch" data-clock-color="#bce8d2" style="--swatch:#bce8d2" aria-label="薄荷绿" aria-pressed="false"></button>
+        <button type="button" class="color-swatch" data-clock-color="#c6ddff" style="--swatch:#c6ddff" aria-label="天空蓝" aria-pressed="false"></button>
+        <button type="button" class="color-swatch" data-clock-color="#ffe0ae" style="--swatch:#ffe0ae" aria-label="暖杏色" aria-pressed="false"></button>
+        <button type="button" class="color-swatch" data-clock-color="#ffd2e2" style="--swatch:#ffd2e2" aria-label="樱花粉" aria-pressed="false"></button>
+        <label class="custom-color-label"><input id="clock-color-input" type="color" value="#ffffff" aria-label="自定义时钟颜色"><span>自定义</span></label>
+      </div>
+      <p class="field-help">默认白色；仅时钟使用所选颜色，其他文字始终为白色。</p>
+      <div class="style-two-columns"><label class="style-label">时钟字体<select class="field" id="clock-font"><option value="sans">现代无衬线</option><option value="serif">优雅衬线</option><option value="mono">等宽数字</option></select></label><label class="style-label">界面点缀色<input id="accent-color-input" class="accent-picker" type="color" value="#98cbb4"></label></div>
+      <label class="range-label" for="clock-size"><span>时钟大小</span><output id="clock-size-value">100%</output></label><input type="range" id="clock-size" min="75" max="125" step="5" value="100">
+      <div class="segmented style-hour-format" role="group" aria-label="时间格式"><button type="button" data-hour-format="24" aria-pressed="false">24 小时制</button><button type="button" data-hour-format="12" aria-pressed="false">12 小时制</button></div>
+      <label class="style-checkbox"><input id="clock-show-seconds" type="checkbox"><span>显示秒数 / 秒针</span></label>
+    </section>
+    <section class="setting-section"><h3>面板外观</h3><div class="segmented" role="group" aria-label="面板材质"><button type="button" data-panel-style="glass" aria-pressed="false">通透玻璃</button><button type="button" data-panel-style="solid" aria-pressed="false">柔和纯色</button></div><label class="range-label" for="dim-range"><span>背景遮罩</span><span id="dim-value">30%</span></label><input type="range" id="dim-range" min="10" max="65" step="1"></section>
+    <button type="button" class="reset-style" id="reset-style">还原时钟与配色</button>
+
     <div class="privacy-note"><span data-icon="lock"></span><p>名字、网址和偏好保存在当前浏览器。<br>换台设备时，需要重新设置。</p></div><button class="drawer-done" data-close="settings-dialog">好了，回到此刻 <span data-icon="arrow"></span></button>
   </dialog>
   <dialog class="link-dialog" id="link-dialog" aria-labelledby="link-dialog-title"><div class="link-dialog-head"><h2 id="link-dialog-title">添加一个常去的地方</h2><button class="icon-button" data-close="link-dialog" aria-label="关闭" data-icon="close"></button></div><form id="link-form"><label for="link-name">网站名称</label><input class="field" id="link-name" maxlength="24" placeholder="例如：我的博客" required><label for="link-url">网址</label><input class="field" id="link-url" placeholder="https://example.com" required inputmode="url"><label for="link-category">放在哪一组</label><select class="field" id="link-category"><option>常用</option><option>工作</option><option>灵感</option><option>生活</option></select><p class="form-error" id="link-error" role="alert"></p><div class="form-actions"><button type="button" class="delete-button" id="delete-link" hidden>删除网址</button><button type="submit" class="save-button">保存网址 <span data-icon="arrow"></span></button></div></form></dialog>
