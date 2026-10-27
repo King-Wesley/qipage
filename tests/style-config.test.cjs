@@ -26,3 +26,5 @@ test('manual style selection and hex colors survive JSON storage round trips',()
   const restored=normalizeStyle(JSON.parse(JSON.stringify(chosen)));
   assert.equal(restored.clockStyle,'analog');assert.equal(restored.clockColor,'#aaccff');assert.equal(restored.panelStyle,'solid');assert.equal(restored.showSeconds,true);assert.equal(rgb(restored.accentColor),'255,170,136');
 });
+
+test('reading size rejects corrupted preferences and clamps to usable limits',()=>{assert.equal(normalizeStyle({newsFontSize:999}).newsFontSize,24);assert.equal(normalizeStyle({newsFontSize:1}).newsFontSize,14);assert.equal(normalizeStyle({newsFontSize:'invalid'}).newsFontSize,16);});

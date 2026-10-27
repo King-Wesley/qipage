@@ -23,6 +23,7 @@ function fixture(t,options={}){
     if(String(url).endsWith('/chat/completions')){
       assert.equal(body.model,'deepseek-flash');assert.equal(body.response_format.type,'json_object');
       let content={ok:true};
+      if(body.messages[0].content.includes('每日配文编辑'))content={tagline:'在日常里遇见微光',note:'给今天留一扇窗，让新鲜的风慢慢吹进来。',quote:'沿着自己的节奏走，小小的期待也会长成风景。'};
       if(body.messages[0].content.includes('新闻编辑')){const input=JSON.parse(body.messages[1].content);control.newsCandidates=input.candidates;content={news:[{id:control.mode==='bad-id'?'invented-id':input.candidates[0].id,summary:'模型只对已经检索到的候选事实做简体中文摘要。',why:'对关注领域有明确影响，值得进一步查看原文。',url:'https://invented.example/ignore'}]};}
       if(body.messages[0].content.includes('桌面壁纸')){const input=JSON.parse(body.messages[1].content);content={id:input.candidates[0].id,reason:'自然风景清爽，适合放置文字导航。'};}
       return json({choices:[{finish_reason:'stop',message:{content:JSON.stringify(content)}}]});

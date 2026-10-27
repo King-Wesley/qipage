@@ -1,9 +1,9 @@
 name: Clock style checks
 on:
   push:
-    branches: [main, feature/daily-deepseek, feature/android-apk, feature/clock-styles]
+    branches: [main, feature/daily-deepseek, feature/android-apk, feature/clock-styles, feature/daily-ai-copy]
   pull_request:
-    paths: ['app.js', 'ui.js', 'build.cjs', 'style-config.js', 'index.html', 'style.css', 'server.cjs', 'tests/**', 'package*.json', '.github/workflows/style-checks.yml']
+    paths: ['app.js', 'ui.js', 'build.cjs', 'style-config.js', 'index.html', 'style.css', 'server.cjs', 'daily*', 'CHANGELOG.md', 'tests/**', 'package*.json', '.github/workflows/style-checks.yml']
 permissions:
   contents: read
 jobs:

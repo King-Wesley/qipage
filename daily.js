@@ -76,6 +76,19 @@
     get('daily-connect').textContent=state?.configured?'调整关注领域 ↗':'连接 DeepSeek ↗';
     get('daily-empty-message').textContent=state?.newsMessage||(state?.configured?'填写你的关注领域，再点击“现在更新”，让 DeepSeek 开始筛选。':'连接 DeepSeek，填写关注领域，每天为你选出值得读的几条新闻。');
   }
+  function renderCopy(){
+    const copy=state?.copy,status=get('daily-copy-status');
+    if(copy&&['note','quote','tagline'].every(key=>typeof copy[key]==='string')){
+      window.qipageDailyCopy=copy;get('daily-tagline').textContent=copy.tagline;
+      document.querySelector('.quote').textContent='「 '+copy.quote+' 」';
+      status.hidden=false;status.textContent=(state.copyDate===dateNow()?'AI 配文 · ':'上次 AI 配文 · ')+plainDate(state.copyDate);
+      status.title=state.copyMessage||'';
+    }else{
+      window.qipageDailyCopy=null;get('daily-tagline').textContent='你的日常，自在一点';document.querySelector('.quote').textContent='「 把日子过成自己喜欢的样子。 」';
+      status.hidden=!state?.configured;status.textContent='默认配文 · 等待每日更新';status.title=state?.copyMessage||'';
+    }
+    updateTime();
+  }
   function renderState(){
     if(!state)return;
     const today=dateNow(),old=state.newsDate&&state.newsDate!==today;
@@ -87,7 +100,7 @@
     get('daily-next-update').textContent=state.nextUpdateAt&&state.enabled?'下次 · '+formatTime(state.nextUpdateAt):'';
     const paper=state.wallpaper;
     get('daily-wallpaper-note').textContent=paper?((state.wallpaperDate!==today?'上次壁纸':'今日壁纸')+' · '+(paper.title||'每日甄选')+(paper.reason?' — '+paper.reason:'')):(state.wallpaperMessage||'从近期 Bing 每日图片中，为你挑一张新风景。');
-    renderNews();renderWallpaper();
+    renderNews();renderWallpaper();renderCopy();
   }
   async function loadState(){
     clearTimeout(pollTimer);
